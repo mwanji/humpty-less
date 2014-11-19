@@ -1,0 +1,6 @@
+[[bundles]]
+  name = "bundle.css"
+	assets = ["bootstrap.less.variables"]
+
+[options.bootstrapLess]
+  responsive = false
