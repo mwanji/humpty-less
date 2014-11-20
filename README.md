@@ -1,6 +1,6 @@
 # humpty-less
 
-Compiles LESS files in the [humpty](http://mewf.co/humpty) pipeline.
+Compiles LESS files in the [humpty](https://github.com/mwanji/humpty) pipeline.
 
 ## Installation
 
