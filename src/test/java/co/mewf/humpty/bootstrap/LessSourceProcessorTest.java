@@ -12,11 +12,11 @@ import org.junit.Test;
 import co.mewf.humpty.Pipeline;
 import co.mewf.humpty.config.HumptyBootstrap;
 
-public class BootstrapLessProcessorTest {
+public class LessSourceProcessorTest {
 
   @Test
   public void should_accept_less_file() {
-    BootstrapLessSourceProcessor processor = new BootstrapLessSourceProcessor();
+    LessSourceProcessor processor = new LessSourceProcessor();
     
     assertTrue(processor.accepts("bootstrap.less"));
     assertFalse(processor.accepts("b-v.less.variables"));
