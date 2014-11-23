@@ -6,7 +6,7 @@
     <version>0.7.0</version>
   </parent>
   <artifactId>humpty-less</artifactId>
-  <name>Compiles customised versions of Bootstrap and Font Awesome from LESS for Humpty</name>
+  <name>Compiles LESS for Humpty</name>
   <version>1.0.0-SNAPSHOT</version>
   <url>http://mewf.co/humpty/less</url>
   <description>A humpty plugin that compiles LESS.</description>
