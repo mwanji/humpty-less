@@ -36,7 +36,7 @@ public class LessSourceProcessor implements SourceProcessor {
       LessSource lessSource = new WebJarLessSource(compilationResult.getAssetName(), locator);
       com.github.sommeri.less4j.LessCompiler.CompilationResult lessCompilationResult = LESS_COMPILER.compile(lessSource);
       
-      return new CompilationResult(compilationResult.getAssetName(), lessCompilationResult.getCss());
+      return new CompilationResult(compilationResult.getAssetName().replace(".less", ".css"), lessCompilationResult.getCss());
     } catch (Less4jException e) {
       throw new RuntimeException(e);
     }
