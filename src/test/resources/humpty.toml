@@ -1,7 +1,7 @@
-[[bundles]]
+[[bundle]]
   name = "bootstrapVanilla.css"
   assets = ["bootstrap.less"]
 
-[[bundles]]
+[[bundle]]
   name = "bootstrapCustom.css"
   assets = ["customBootstrap.less"]

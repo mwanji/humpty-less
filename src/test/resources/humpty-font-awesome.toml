@@ -1,3 +1,0 @@
-[[bundles]]
-  name = "bundle.css"
-  assets = ["bootstrap.less.variables"]
