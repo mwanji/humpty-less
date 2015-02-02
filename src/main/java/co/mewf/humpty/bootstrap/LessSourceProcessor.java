@@ -1,5 +1,7 @@
 package co.mewf.humpty.bootstrap;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -7,6 +9,8 @@ import javax.inject.Inject;
 
 import org.webjars.WebJarAssetLocator;
 
+import co.mewf.humpty.config.Configuration;
+import co.mewf.humpty.config.Configuration.GlobalOptions;
 import co.mewf.humpty.config.PreProcessorContext;
 import co.mewf.humpty.spi.processors.SourceProcessor;
 
@@ -19,6 +23,8 @@ public class LessSourceProcessor implements SourceProcessor {
 
   private static final LessCompiler LESS_COMPILER = new DefaultLessCompiler();
   private WebJarAssetLocator locator;
+  private GlobalOptions globalOptions;
+  private Path assetsDir;
 
   @Override
   public String getName() {
@@ -33,7 +39,13 @@ public class LessSourceProcessor implements SourceProcessor {
   @Override
   public CompilationResult compile(CompilationResult compilationResult, PreProcessorContext context) {
     try {
-      LessSource lessSource = new WebJarLessSource(compilationResult.getAssetName(), locator);
+      LessSource lessSource;
+      Path assetPath = Paths.get(compilationResult.getAssetName());
+      if (assetPath.toFile().exists()) {
+        lessSource = new WebJarLessSource(assetPath, locator);
+      } else {
+        lessSource = new WebJarLessSource(compilationResult.getAssetName(), locator);
+      }
       com.github.sommeri.less4j.LessCompiler.CompilationResult lessCompilationResult = LESS_COMPILER.compile(lessSource);
       
       return new CompilationResult(compilationResult.getAssetName().replace(".less", ".css"), lessCompilationResult.getCss());
@@ -43,8 +55,10 @@ public class LessSourceProcessor implements SourceProcessor {
   }
   
   @Inject
-  public void configure(WebJarAssetLocator locator) {
+  public void configure(WebJarAssetLocator locator, Configuration.GlobalOptions globalOptions, Configuration.Options options) {
     this.locator = locator;
+    this.globalOptions = globalOptions;
+    this.assetsDir = globalOptions.getAssetsDir();
   }
   
   private static class WebJarLessSource extends LessSource.URLSource {
@@ -58,9 +72,33 @@ public class LessSourceProcessor implements SourceProcessor {
       this.locator = locator;
     }
     
+    private WebJarLessSource(Path assetPath, WebJarAssetLocator locator) {
+      super(toURL(assetPath));
+      this.path = assetPath;
+      this.locator = locator;
+    }
+
     @Override
     public LessSource relativeSource(String filename) throws FileNotFound, CannotReadFile {
-      return new WebJarLessSource(locator.getFullPath(path.getParent().resolve(Paths.get(filename)).normalize().toString()), locator);
+      if (filename.startsWith("webjar:")) {
+        return new WebJarLessSource(locator.getFullPath(filename.substring(7)), locator);
+      }
+      
+      Path otherAssetPath = path.getParent().resolve(Paths.get(filename)).normalize();
+      
+      if (otherAssetPath.toFile().exists()) {
+        return new WebJarLessSource(otherAssetPath, locator);
+      }
+      
+      return new WebJarLessSource(locator.getFullPath(otherAssetPath.toString()), locator);
+    }
+    
+    private static URL toURL(Path path) {
+      try {
+        return path.toUri().toURL();
+      } catch (MalformedURLException e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 }

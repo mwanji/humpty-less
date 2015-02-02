@@ -1,3 +1,6 @@
+imports.css = ["/sub/withImports.less"]
+webJarImports.css = ["/withWebJarImport.less"]
+  
 [[bundle]]
   name = "bootstrapVanilla.css"
   assets = ["bootstrap.less"]
@@ -5,3 +8,10 @@
 [[bundle]]
   name = "bootstrapCustom.css"
   assets = ["customBootstrap.less"]
+  
+[[bundle]]
+  name = "app.css"
+  assets = ["/sub/appLess.less"]
+  
+[options]
+  assetsDir = "src/test/resources/assets"
