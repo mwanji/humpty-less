@@ -1,5 +1,5 @@
-imports.css = ["/sub/withImports.less"]
-webJarImports.css = ["/withWebJarImport.less"]
+"imports.css" = ["/sub/withImports.less"]
+"webJarImports.css" = ["/withWebJarImport.less"]
   
 [[bundle]]
   name = "bootstrapVanilla.css"
