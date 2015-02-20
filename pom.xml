@@ -3,7 +3,7 @@
   <parent>
     <groupId>co.mewf.humpty</groupId>
     <artifactId>humpty-parent</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
   </parent>
   <artifactId>humpty-less</artifactId>
   <name>Compiles LESS for Humpty</name>
@@ -11,10 +11,6 @@
   <url>http://mewf.co/humpty/less</url>
   <description>A humpty plugin that compiles LESS.</description>
   <dependencies>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  	</dependency>
   	<dependency>
   		<groupId>co.mewf.humpty</groupId>
   		<artifactId>humpty</artifactId>
