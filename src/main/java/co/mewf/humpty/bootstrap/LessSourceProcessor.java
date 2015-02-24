@@ -44,7 +44,7 @@ public class LessSourceProcessor implements SourceProcessor {
       if (assetPath.toFile().exists()) {
         lessSource = new WebJarLessSource(assetPath, locator);
       } else {
-        lessSource = new WebJarLessSource(compilationResult.getAssetName(), locator);
+        lessSource = new LessSource.URLSource(Thread.currentThread().getContextClassLoader().getResource(compilationResult.getAssetName()));
       }
       com.github.sommeri.less4j.LessCompiler.CompilationResult lessCompilationResult = LESS_COMPILER.compile(lessSource);
       
@@ -68,7 +68,7 @@ public class LessSourceProcessor implements SourceProcessor {
 
     private WebJarLessSource(String assetName, WebJarAssetLocator locator) {
       super(WebJarLessSource.class.getResource("/" + assetName));
-      this.path = Paths.get(assetName.replace(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/", ""));
+      this.path = Paths.get(assetName);
       this.locator = locator;
     }
     
@@ -80,17 +80,13 @@ public class LessSourceProcessor implements SourceProcessor {
 
     @Override
     public LessSource relativeSource(String filename) throws FileNotFound, CannotReadFile {
-      if (filename.startsWith("webjar:")) {
-        return new WebJarLessSource(locator.getFullPath(filename.substring(7)), locator);
+      Path relativeSourcePath = path.getParent().resolve(Paths.get(filename)).normalize();
+      
+      if (!relativeSourcePath.toFile().exists()) {
+        return new LessSource.URLSource(Thread.currentThread().getContextClassLoader().getResource(locator.getFullPath(filename)));
       }
       
-      Path otherAssetPath = path.getParent().resolve(Paths.get(filename)).normalize();
-      
-      if (otherAssetPath.toFile().exists()) {
-        return new WebJarLessSource(otherAssetPath, locator);
-      }
-      
-      return new WebJarLessSource(locator.getFullPath(otherAssetPath.toString()), locator);
+      return new WebJarLessSource(relativeSourcePath, locator);
     }
     
     private static URL toURL(Path path) {

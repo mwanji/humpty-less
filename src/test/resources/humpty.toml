@@ -7,7 +7,7 @@
 
 [[bundle]]
   name = "bootstrapCustom.css"
-  assets = ["customBootstrap.less"]
+  assets = ["/customBootstrap.less"]
   
 [[bundle]]
   name = "app.css"

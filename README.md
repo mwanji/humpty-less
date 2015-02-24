@@ -21,17 +21,19 @@ Add the following dependency to your POM:
 Add LESS files to humpty bundles:
 
 ````toml
-[[bundles]]
-  name = "styles.css"
-  assets = ["app.less"]
+"styles.css" = ["app.less"]
 ````
+
+### Imports
+
+Imports are resolved relative to the file they are declared in. If it cannot be resolved, then it is considered to be pointing at a WebJar, as in the following example.
 
 ### Bootstrap Example
 
-To integrate Bootstrap and use custom values for its variables, you could have the following in the above-mentioned app.less, (if it is in `src/main/resources/META-INF/resources/webjars/myapp/1.0.0`):
+To integrate Bootstrap and use custom values for its variables, you could have the following in the above-mentioned app.less, (if it is in `src/main/resources/assets`):
 
 ````less
-@import "../../bootstrap/3.3.1/less/bootstrap.less";
+@import "bootstrap/3.3.1/less/bootstrap.less";
 
 @gray-base: #111;
 @link-color: @brand-danger;
