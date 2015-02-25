@@ -1,6 +1,5 @@
 package co.mewf.humpty.bootstrap;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,10 +40,10 @@ public class LessSourceProcessor implements SourceProcessor {
     try {
       LessSource lessSource;
       Path assetPath = Paths.get(compilationResult.getAssetName());
-      if (assetPath.toFile().exists()) {
+      if (assetPath.startsWith(globalOptions.getAssetsDir())) {
         lessSource = new WebJarLessSource(assetPath, locator);
       } else {
-        lessSource = new LessSource.URLSource(Thread.currentThread().getContextClassLoader().getResource(compilationResult.getAssetName()));
+        lessSource = new LessSource.URLSource(toURL(assetPath));
       }
       com.github.sommeri.less4j.LessCompiler.CompilationResult lessCompilationResult = LESS_COMPILER.compile(lessSource);
       
@@ -63,38 +62,31 @@ public class LessSourceProcessor implements SourceProcessor {
   
   private static class WebJarLessSource extends LessSource.URLSource {
     
-    private final WebJarAssetLocator locator;
     private final Path path;
+    private final WebJarAssetLocator locator;
 
-    private WebJarLessSource(String assetName, WebJarAssetLocator locator) {
-      super(WebJarLessSource.class.getResource("/" + assetName));
-      this.path = Paths.get(assetName);
-      this.locator = locator;
-    }
-    
     private WebJarLessSource(Path assetPath, WebJarAssetLocator locator) {
       super(toURL(assetPath));
       this.path = assetPath;
       this.locator = locator;
     }
-
+    
     @Override
     public LessSource relativeSource(String filename) throws FileNotFound, CannotReadFile {
       Path relativeSourcePath = path.getParent().resolve(Paths.get(filename)).normalize();
-      
-      if (!relativeSourcePath.toFile().exists()) {
-        return new LessSource.URLSource(Thread.currentThread().getContextClassLoader().getResource(locator.getFullPath(filename)));
+      if (toURL(relativeSourcePath) != null) {
+        return new WebJarLessSource(relativeSourcePath, locator);
       }
       
-      return new WebJarLessSource(relativeSourcePath, locator);
+      return new LessSource.URLSource(toURL(locator.getFullPath(filename)));
     }
-    
-    private static URL toURL(Path path) {
-      try {
-        return path.toUri().toURL();
-      } catch (MalformedURLException e) {
-        throw new RuntimeException(e);
-      }
-    }
+  }
+  
+  private static URL toURL(Path path) {
+    return toURL(path.toString());
+  }
+  
+  private static URL toURL(String path) {
+    return Thread.currentThread().getContextClassLoader().getResource(path);
   }
 }
