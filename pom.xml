@@ -3,7 +3,7 @@
   <parent>
     <groupId>co.mewf.humpty</groupId>
     <artifactId>humpty-parent</artifactId>
-    <version>0.8.0</version>
+    <version>0.9.0</version>
   </parent>
   <artifactId>humpty-less</artifactId>
   <name>Compiles LESS for Humpty</name>
