@@ -3,7 +3,7 @@
   <parent>
     <groupId>co.mewf.humpty</groupId>
     <artifactId>humpty-parent</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
   </parent>
   <artifactId>humpty-less</artifactId>
   <name>Compiles LESS for Humpty</name>
@@ -12,29 +12,19 @@
   <description>A humpty plugin that compiles LESS.</description>
   <dependencies>
   	<dependency>
+  	  <groupId>com.github.sommeri</groupId>
+  	  <artifactId>less4j</artifactId>
+  	  <version>1.8.4</version>
+  	</dependency>
+  	<dependency>
   		<groupId>co.mewf.humpty</groupId>
   		<artifactId>humpty</artifactId>
-  	</dependency>
-  	<dependency>
-  		<groupId>commons-io</groupId>
-  		<artifactId>commons-io</artifactId>
-  		<version>2.4</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.apache.commons</groupId>
-  		<artifactId>commons-lang3</artifactId>
-  		<version>3.1</version>
   	</dependency>
   	<dependency>
   		<groupId>org.webjars</groupId>
   		<artifactId>bootstrap</artifactId>
   		<version>3.3.1</version>
       <scope>test</scope>
-  	</dependency>
-  	<dependency>
-  	  <groupId>com.github.sommeri</groupId>
-  	  <artifactId>less4j</artifactId>
-  	  <version>1.8.4</version>
   	</dependency>
   	<dependency>
   	  <groupId>org.slf4j</groupId>
