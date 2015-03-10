@@ -7,7 +7,7 @@
   </parent>
   <artifactId>humpty-less</artifactId>
   <name>Compiles LESS for Humpty</name>
-  <version>0.1.0</version>
+  <version>0.2.0-SNAPSHOT</version>
   <url>http://mewf.co/humpty/less</url>
   <description>A humpty plugin that compiles LESS.</description>
   <dependencies>
@@ -42,7 +42,7 @@
     <connection>${github.repo}/${project.artifactId}.git</connection>
     <developerConnection>${github.repo}/${project.artifactId}.git</developerConnection>
     <url>${github.url}/${project.artifactId}</url>
-    <tag>humpty-less-0.1.0</tag>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>Github Issues</system>
